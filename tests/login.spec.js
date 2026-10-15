@@ -15,3 +15,15 @@ test('user can login with valid credentials', async ({ page }) => {
 
   await expect(page).toHaveURL(/inventory/);
 });
+
+test('user cannot login with invalid credentials', async ({ page }) => {
+  await page.goto('https://www.saucedemo.com/');
+
+  await page.locator('[data-test="username"]').fill('invalid_user');
+  await page.locator('[data-test="password"]').fill('wrong_password');
+  await page.getByRole('button', { name: 'Login' }).click();
+
+  await expect(page.locator('[data-test="error"]')).toContainText(
+    'Username and password do not match'
+  );
+});

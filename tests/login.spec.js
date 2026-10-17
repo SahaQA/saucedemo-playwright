@@ -18,6 +18,12 @@ const invalidUsers = [
   }
 ];
 
+async function login(page, username, password) {
+  await page.locator('[data-test="username"]').fill(username);
+  await page.locator('[data-test="password"]').fill(password);
+  await page.getByRole('button', { name: 'Login' }).click();
+};
+
 test.describe('SauceDemo login', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('https://www.saucedemo.com/');
@@ -28,9 +34,7 @@ test.describe('SauceDemo login', () => {
   });
 
   test('user can login with valid credentials', async ({ page }) => {
-    await page.locator('[data-test="username"]').fill(users.valid.username);
-    await page.locator('[data-test="password"]').fill(users.valid.password);
-    await page.getByRole('button', { name: 'Login' }).click();
+    await login(page, users.valid.username, users.valid.password);
 
     await expect(page).toHaveURL(/inventory/);
     await expect(page.getByText('Products')).toBeVisible();
@@ -38,9 +42,7 @@ test.describe('SauceDemo login', () => {
 
 for (const user of invalidUsers) {
 test(`user cannot login with invalid credentials: ${user.username}`, async ({ page }) => {
-    await page.locator('[data-test="username"]').fill(user.username);
-    await page.locator('[data-test="password"]').fill(user.password);
-    await page.getByRole('button', { name: 'Login' }).click();
+    await login(page, user.username, user.password);
 
     await expect(page.locator('[data-test="error"]')).toContainText(
       'Username and password do not match'

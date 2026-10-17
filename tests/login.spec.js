@@ -54,4 +54,12 @@ test('login page starts with empty credentials', async ({ page }) => {
   await expect(page.locator('[data-test="username"]')).toHaveValue('');
   await expect(page.locator('[data-test="password"]')).toHaveValue('');
 });
+
+test('locked out user cannot login', async ({ page }) => {
+  await login(page, 'locked_out_user', 'secret_sauce');
+
+  await expect(page.locator('[data-test="error"]')).toContainText(
+    'Sorry, this user has been locked out'
+  );
+});
 });

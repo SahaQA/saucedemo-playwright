@@ -1,6 +1,8 @@
 const { defineConfig, devices } = require('@playwright/test');
 
 module.exports = defineConfig({
+  retries: process.env.CI ? 2 : 0,
+
   reporter: [
     ['list'],
     ['html', { open: 'never' }]
@@ -22,8 +24,8 @@ module.exports = defineConfig({
       use: { ...devices['Desktop Firefox'] }
     },
     {
-    name: 'webkit',
-    use: { ...devices['Desktop Safari'] }
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] }
     }
   ]
 });

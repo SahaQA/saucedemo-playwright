@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+    "test": "playwright test",
+    "test:login": "playwright test tests/login.spec.js",
+    "test:inventory": "playwright test tests/inventory.spec.js"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",

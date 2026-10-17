@@ -1,25 +1,17 @@
 const { test, expect } = require('@playwright/test');
-const { LoginPage } = require('../pages/login.page');
 const { InventoryPage } = require('../pages/inventory.page');
 const { CartPage } = require('../pages/cart.page');
-const { users } = require('../test-data/users');
 const { products } = require('../test-data/products');
 
 test.describe('SauceDemo inventory', () => {
-  let loginPage;
   let inventoryPage;
   let cartPage;
 
   test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(page);
     inventoryPage = new InventoryPage(page);
     cartPage = new CartPage(page);
 
-    await loginPage.open();
-    await loginPage.login(
-      users.valid.username,
-      users.valid.password
-    );
+    await page.goto('/inventory.html');
   });
 
   test('logged in user can see the inventory page', async ({ page }) => {

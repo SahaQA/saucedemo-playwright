@@ -22,10 +22,10 @@ const invalidUsers = [
 test.describe('SauceDemo login', () => {
   let loginPage;
 
-  test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(page);
-    await page.goto('https://www.saucedemo.com/');
-  });
+test.beforeEach(async ({ page }) => {
+  loginPage = new LoginPage(page);
+  await loginPage.open();
+});
 
   test('user can open the SauceDemo login page', async ({ page }) => {
     await expect(page).toHaveTitle(/Swag Labs/);

@@ -22,4 +22,10 @@ test.describe('SauceDemo inventory', () => {
     await expect(page).toHaveURL(/inventory/);
     await expect(inventoryPage.title).toBeVisible();
   });
+
+  test('user can add Sauce Labs Backpack to cart', async () => {
+  await inventoryPage.addBackpackToCart();
+
+  await expect(inventoryPage.cartBadge).toHaveText('1');
+});
 });

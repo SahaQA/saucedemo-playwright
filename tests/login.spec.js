@@ -46,4 +46,9 @@ test(`user cannot login with invalid credentials: ${user.username}`, async ({ pa
     );
   });
 }
+
+test('login page starts with empty credentials', async ({ page }) => {
+  await expect(page.locator('[data-test="username"]')).toHaveValue('');
+  await expect(page.locator('[data-test="password"]')).toHaveValue('');
+});
 });

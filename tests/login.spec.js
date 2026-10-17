@@ -4,12 +4,19 @@ const users = {
   valid: {
     username: 'standard_user',
     password: 'secret_sauce'
-  },
-  invalid: {
-    username: 'invalid_user',
-    password: 'wrong_password'
   }
 };
+
+const invalidUsers = [
+  {
+    username: 'invalid_user',
+    password: 'wrong_password'
+  },
+  {
+    username: 'standard_user',
+    password: 'wrong_password'
+  }
+];
 
 test.describe('SauceDemo login', () => {
   test.beforeEach(async ({ page }) => {
@@ -28,13 +35,15 @@ test.describe('SauceDemo login', () => {
     await expect(page).toHaveURL(/inventory/);
   });
 
-  test('user cannot login with invalid credentials', async ({ page }) => {
-    await page.locator('[data-test="username"]').fill(users.invalid.username);
-    await page.locator('[data-test="password"]').fill(users.invalid.password);
+for (const user of invalidUsers) {
+test(`user cannot login with invalid credentials: ${user.username}`, async ({ page }) => {
+    await page.locator('[data-test="username"]').fill(user.username);
+    await page.locator('[data-test="password"]').fill(user.password);
     await page.getByRole('button', { name: 'Login' }).click();
 
     await expect(page.locator('[data-test="error"]')).toContainText(
       'Username and password do not match'
     );
   });
+}
 });

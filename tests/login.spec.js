@@ -1,23 +1,7 @@
 const { test, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/login.page');
 
-const users = {
-  valid: {
-    username: 'standard_user',
-    password: 'secret_sauce'
-  }
-};
-
-const invalidUsers = [
-  {
-    username: 'invalid_user',
-    password: 'wrong_password'
-  },
-  {
-    username: 'standard_user',
-    password: 'wrong_password'
-  }
-];
+const { users, invalidUsers } = require('../test-data/users');
 
 test.describe('SauceDemo login', () => {
   let loginPage;
@@ -57,8 +41,10 @@ test.beforeEach(async ({ page }) => {
   });
 
   test('locked out user cannot login', async () => {
-    await loginPage.login('locked_out_user', 'secret_sauce');
-
+   await loginPage.login(
+  users.lockedOut.username,
+  users.lockedOut.password
+);
     await expect(loginPage.errorMessage).toContainText(
       'Sorry, this user has been locked out'
     );

@@ -33,6 +33,7 @@ test.describe('SauceDemo login', () => {
     await page.getByRole('button', { name: 'Login' }).click();
 
     await expect(page).toHaveURL(/inventory/);
+    await expect(page.getByText('Products')).toBeVisible();
   });
 
 for (const user of invalidUsers) {

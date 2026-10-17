@@ -1,8 +1,14 @@
 const { test, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/login.page');
 const { InventoryPage } = require('../pages/inventory.page');
-
 const { users, invalidUsers } = require('../test-data/users');
+
+test.use({
+  storageState: {
+    cookies: [],
+    origins: []
+  }
+});
 
 test.describe('SauceDemo login', () => {
   let loginPage;

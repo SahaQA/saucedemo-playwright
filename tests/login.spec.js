@@ -62,4 +62,22 @@ test('locked out user cannot login', async ({ page }) => {
     'Sorry, this user has been locked out'
   );
 });
+
+test('username is required', async ({ page }) => {
+  await page.locator('[data-test="password"]').fill('secret_sauce');
+  await page.getByRole('button', { name: 'Login' }).click();
+
+  await expect(page.locator('[data-test="error"]')).toContainText(
+    'Username is required'
+  );
+});
+
+test('password is required', async ({ page }) => {
+  await page.locator('[data-test="username"]').fill('standard_user');
+  await page.getByRole('button', { name: 'Login' }).click();
+
+  await expect(page.locator('[data-test="error"]')).toContainText(
+    'Password is required'
+  );
+});
 });

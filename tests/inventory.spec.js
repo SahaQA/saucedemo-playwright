@@ -2,14 +2,17 @@ const { test, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/login.page');
 const { InventoryPage } = require('../pages/inventory.page');
 const { users } = require('../test-data/users');
+const { CartPage } = require('../pages/cart.page');
 
 test.describe('SauceDemo inventory', () => {
   let loginPage;
   let inventoryPage;
+  let cartPage;
 
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
     inventoryPage = new InventoryPage(page);
+    cartPage = new CartPage(page);
 
     await loginPage.open();
     await loginPage.login(
@@ -27,5 +30,12 @@ test.describe('SauceDemo inventory', () => {
   await inventoryPage.addBackpackToCart();
 
   await expect(inventoryPage.cartBadge).toHaveText('1');
+});
+
+    test('added backpack appears in the cart', async () => {
+  await inventoryPage.addBackpackToCart();
+  await inventoryPage.openCart();
+
+  await expect(cartPage.backpackItem).toBeVisible();
 });
 });

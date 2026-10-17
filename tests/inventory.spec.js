@@ -38,4 +38,15 @@ test.describe('SauceDemo inventory', () => {
 
   await expect(cartPage.backpackItem).toBeVisible();
 });
+
+test('user can remove backpack from the cart', async () => {
+  await inventoryPage.addBackpackToCart();
+  await inventoryPage.openCart();
+
+  await expect(cartPage.backpackItem).toBeVisible();
+
+  await cartPage.removeBackpack();
+
+  await expect(cartPage.backpackItem).not.toBeVisible();
+});
 });

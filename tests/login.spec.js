@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+const { LoginPage } = require('../pages/login.page');
 
 const users = {
   valid: {
@@ -18,14 +19,11 @@ const invalidUsers = [
   }
 ];
 
-async function login(page, username, password) {
-  await page.locator('[data-test="username"]').fill(username);
-  await page.locator('[data-test="password"]').fill(password);
-  await page.getByRole('button', { name: 'Login' }).click();
-};
-
 test.describe('SauceDemo login', () => {
+  let loginPage;
+
   test.beforeEach(async ({ page }) => {
+    loginPage = new LoginPage(page);
     await page.goto('https://www.saucedemo.com/');
   });
 
@@ -34,50 +32,53 @@ test.describe('SauceDemo login', () => {
   });
 
   test('user can login with valid credentials', async ({ page }) => {
-    await login(page, users.valid.username, users.valid.password);
+    await loginPage.login(
+      users.valid.username,
+      users.valid.password
+    );
 
     await expect(page).toHaveURL(/inventory/);
     await expect(page.getByText('Products')).toBeVisible();
   });
 
-for (const user of invalidUsers) {
-test(`user cannot login with invalid credentials: ${user.username}`, async ({ page }) => {
-    await login(page, user.username, user.password);
+  for (const user of invalidUsers) {
+    test(`user cannot login with invalid credentials: ${user.username}`, async () => {
+      await loginPage.login(user.username, user.password);
 
-    await expect(page.locator('[data-test="error"]')).toContainText(
-      'Username and password do not match'
+      await expect(loginPage.errorMessage).toContainText(
+        'Username and password do not match'
+      );
+    });
+  }
+
+  test('login page starts with empty credentials', async () => {
+    await expect(loginPage.usernameInput).toHaveValue('');
+    await expect(loginPage.passwordInput).toHaveValue('');
+  });
+
+  test('locked out user cannot login', async () => {
+    await loginPage.login('locked_out_user', 'secret_sauce');
+
+    await expect(loginPage.errorMessage).toContainText(
+      'Sorry, this user has been locked out'
     );
   });
-}
 
-test('login page starts with empty credentials', async ({ page }) => {
-  await expect(page.locator('[data-test="username"]')).toHaveValue('');
-  await expect(page.locator('[data-test="password"]')).toHaveValue('');
-});
+  test('username is required', async () => {
+    await loginPage.passwordInput.fill('secret_sauce');
+    await loginPage.loginButton.click();
 
-test('locked out user cannot login', async ({ page }) => {
-  await login(page, 'locked_out_user', 'secret_sauce');
+    await expect(loginPage.errorMessage).toContainText(
+      'Username is required'
+    );
+  });
 
-  await expect(page.locator('[data-test="error"]')).toContainText(
-    'Sorry, this user has been locked out'
-  );
-});
+  test('password is required', async () => {
+    await loginPage.usernameInput.fill('standard_user');
+    await loginPage.loginButton.click();
 
-test('username is required', async ({ page }) => {
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.getByRole('button', { name: 'Login' }).click();
-
-  await expect(page.locator('[data-test="error"]')).toContainText(
-    'Username is required'
-  );
-});
-
-test('password is required', async ({ page }) => {
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.getByRole('button', { name: 'Login' }).click();
-
-  await expect(page.locator('[data-test="error"]')).toContainText(
-    'Password is required'
-  );
-});
+    await expect(loginPage.errorMessage).toContainText(
+      'Password is required'
+    );
+  });
 });

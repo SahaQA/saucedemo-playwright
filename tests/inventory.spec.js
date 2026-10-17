@@ -15,10 +15,7 @@ test.describe('SauceDemo inventory', () => {
     cartPage = new CartPage(page);
 
     await loginPage.open();
-    await loginPage.login(
-      users.valid.username,
-      users.valid.password
-    );
+    await loginPage.login(users.valid.username, users.valid.password);
   });
 
   test('logged in user can see the inventory page', async ({ page }) => {
@@ -41,7 +38,7 @@ test('user can remove backpack from the cart', async () => {
   await inventoryPage.addBackpackToCart();
   await inventoryPage.openCart();
   await expect(cartPage.getCartItem('Sauce Labs Backpack')).toBeVisible();
-  await cartPage.removeBackpack();
+  await cartPage.removeProduct('sauce-labs-backpack');
   await expect(cartPage.getCartItem('Sauce Labs Backpack')).not.toBeVisible();
 });
 

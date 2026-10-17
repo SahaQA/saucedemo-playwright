@@ -27,7 +27,7 @@ test.describe('SauceDemo inventory', () => {
   });
 
   test('user can add Sauce Labs Backpack to cart', async () => {
-   await inventoryPage.addBackpackToCart();
+   await inventoryPage.addProductToCart('sauce-labs-backpack');
    await expect(inventoryPage.cartBadge).toHaveText('1');
 });
 
@@ -46,7 +46,7 @@ test('user can remove backpack from the cart', async () => {
 });
 
 test('user can add Sauce Labs Bike Light to cart', async () => {
-  await inventoryPage.addBikeLightToCart();
+  await inventoryPage.addProductToCart('sauce-labs-bike-light');
   await expect(inventoryPage.cartBadge).toHaveText('1');
 });
 });

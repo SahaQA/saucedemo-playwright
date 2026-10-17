@@ -20,7 +20,11 @@ class InventoryPage {
   }
 
   async addBikeLightToCart() {
-  await this.bikeLightAddToCartButton.click();
+    await this.bikeLightAddToCartButton.click();
+  }
+
+  async addProductToCart(productTestId) {
+    await this.page.locator(`[data-test="add-to-cart-${productTestId}"]`).click();
   }
 }
 

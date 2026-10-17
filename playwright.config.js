@@ -17,6 +17,10 @@ module.exports = defineConfig({
 
   projects: [
     {
+    name: 'setup',
+    testMatch: /.*\.setup\.js/
+    },
+    {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] }
     },

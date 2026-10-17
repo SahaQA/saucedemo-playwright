@@ -24,10 +24,20 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            npx playwright install --with-deps chromium
+          else
+            npx playwright install --with-deps
+          fi
 
       - name: Run Playwright tests
-        run: npm test
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            npx playwright test --project=chromium
+          else
+            npm test
+          fi
 
       - name: Upload Playwright report
         if: ${{ !cancelled() }}

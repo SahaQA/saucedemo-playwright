@@ -1,13 +1,17 @@
 const { test, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/login.page');
+const { InventoryPage } = require('../pages/inventory.page');
 
 const { users, invalidUsers } = require('../test-data/users');
 
 test.describe('SauceDemo login', () => {
   let loginPage;
+  let inventoryPage;
 
 test.beforeEach(async ({ page }) => {
   loginPage = new LoginPage(page);
+  inventoryPage = new InventoryPage(page);
+
   await loginPage.open();
 });
 
@@ -22,8 +26,7 @@ test.beforeEach(async ({ page }) => {
     );
 
     await expect(page).toHaveURL(/inventory/);
-    await expect(page.getByText('Products')).toBeVisible();
-  });
+    await expect(inventoryPage.title).toBeVisible();  });
 
   for (const user of invalidUsers) {
     test(`user cannot login with invalid credentials: ${user.username}`, async () => {

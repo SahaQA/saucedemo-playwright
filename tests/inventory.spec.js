@@ -34,15 +34,15 @@ test.describe('SauceDemo inventory', () => {
   test('added backpack appears in the cart', async () => {
    await inventoryPage.addBackpackToCart();
    await inventoryPage.openCart();
-   await expect(cartPage.backpackItem).toBeVisible();
+   await expect(cartPage.getCartItem('Sauce Labs Backpack')).toBeVisible();
 });
 
 test('user can remove backpack from the cart', async () => {
   await inventoryPage.addBackpackToCart();
   await inventoryPage.openCart();
-  await expect(cartPage.backpackItem).toBeVisible();
+  await expect(cartPage.getCartItem('Sauce Labs Backpack')).toBeVisible();
   await cartPage.removeBackpack();
-  await expect(cartPage.backpackItem).not.toBeVisible();
+  await expect(cartPage.getCartItem('Sauce Labs Backpack')).not.toBeVisible();
 });
 
 test('user can add Sauce Labs Bike Light to cart', async () => {

@@ -26,43 +26,43 @@ const requiredFieldCases = [
 ];
 
 test.describe('SauceDemo checkout', () => {
-  test('user can submit valid checkout information', async ({ page, inventoryPage, cartPage, checkoutPage }) => {
+  test('user can submit valid checkout information', async ({ page, inventoryPage, cartPage, checkoutInformationPage, checkoutOverviewPage, checkoutCompletePage }) => {
       await inventoryPage.addProductToCart(products.backpack.testId);
       await inventoryPage.openCart();
       await cartPage.proceedToCheckout();
-      await checkoutPage.fillCustomerInformation('John', 'Doe', '12345');
+      await checkoutInformationPage.fillCustomerInformation('John', 'Doe', '12345');
       await expect(page).toHaveURL(/checkout-step-two/);
 
-      await expect(checkoutPage.subtotalLabel).toContainText('Item total:');
-      await expect(checkoutPage.taxLabel).toContainText('Tax:');
-      await expect(checkoutPage.totalLabel).toContainText('Total:');
+      await expect(checkoutOverviewPage.subtotalLabel).toContainText('Item total:');
+      await expect(checkoutOverviewPage.taxLabel).toContainText('Tax:');
+      await expect(checkoutOverviewPage.totalLabel).toContainText('Total:');
 
-      const subtotalText = await checkoutPage.subtotalLabel.textContent();
-      const taxText = await checkoutPage.taxLabel.textContent();
-      const totalText = await checkoutPage.totalLabel.textContent();
+      const subtotalText = await checkoutOverviewPage.subtotalLabel.textContent();
+      const taxText = await checkoutOverviewPage.taxLabel.textContent();
+      const totalText = await checkoutOverviewPage.totalLabel.textContent();
 
       const subtotal = Number(subtotalText.replace('Item total: $', ''));
       const tax = Number(taxText.replace('Tax: $', ''));
       const total = Number(totalText.replace('Total: $', ''));
 
       expect(subtotal + tax).toBeCloseTo(total, 2);
-      await checkoutPage.finishOrder();
+      await checkoutOverviewPage.finishOrder();
       await expect(page).toHaveURL(/checkout-complete/);
-      await expect(page.getByText('Thank you for your order!')).toBeVisible();
+      await expect(checkoutCompletePage.confirmationMessage).toBeVisible();
 });
 
   for (const testCase of requiredFieldCases) {
-  test(`${testCase.name} is required during checkout`, async ({ inventoryPage, cartPage, checkoutPage }) => {
+  test(`${testCase.name} is required during checkout`, async ({ inventoryPage, cartPage, checkoutInformationPage }) => {
     await inventoryPage.addProductToCart(products.backpack.testId);
     await inventoryPage.openCart();
     await cartPage.proceedToCheckout();
 
-    await checkoutPage.firstNameInput.fill(testCase.firstName);
-    await checkoutPage.lastNameInput.fill(testCase.lastName);
-    await checkoutPage.postalCodeInput.fill(testCase.postalCode);
-    await checkoutPage.continueButton.click();
+    await checkoutInformationPage.firstNameInput.fill(testCase.firstName);
+    await checkoutInformationPage.lastNameInput.fill(testCase.lastName);
+    await checkoutInformationPage.postalCodeInput.fill(testCase.postalCode);
+    await checkoutInformationPage.continueButton.click();
 
-    await expect(checkoutPage.errorMessage).toContainText(
+    await expect(checkoutInformationPage.errorMessage).toContainText(
       testCase.expectedError
     );
   });

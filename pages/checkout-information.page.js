@@ -1,4 +1,4 @@
-class CheckoutPage {
+class CheckoutInformationPage {
   constructor(page) {
     this.page = page;
 
@@ -7,10 +7,6 @@ class CheckoutPage {
     this.postalCodeInput = page.locator('[data-test="postalCode"]');
     this.continueButton = page.locator('[data-test="continue"]');
     this.errorMessage = page.locator('[data-test="error"]');
-    this.subtotalLabel = page.locator('[data-test="subtotal-label"]');
-    this.taxLabel = page.locator('[data-test="tax-label"]');
-    this.totalLabel = page.locator('[data-test="total-label"]');
-    this.finishButton = page.locator('[data-test="finish"]');
   }
 
   async fillCustomerInformation(firstName, lastName, postalCode) {
@@ -19,15 +15,6 @@ class CheckoutPage {
     await this.postalCodeInput.fill(postalCode);
     await this.continueButton.click();
   }
-
-  getOverviewItem(productName) {
-    return this.page.getByText(productName);
-  }
-
-  async finishOrder() {
-    await this.finishButton.click();
-  }
-  
 }
 
-module.exports = { CheckoutPage };
+module.exports = { CheckoutInformationPage };

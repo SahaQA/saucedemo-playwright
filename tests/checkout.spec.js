@@ -45,8 +45,11 @@ test.describe('SauceDemo checkout', () => {
       const tax = Number(taxText.replace('Tax: $', ''));
       const total = Number(totalText.replace('Total: $', ''));
 
-      expect(subtotal + tax).toBeCloseTo(total, 2);}
-  );
+      expect(subtotal + tax).toBeCloseTo(total, 2);
+      await checkoutPage.finishOrder();
+      await expect(page).toHaveURL(/checkout-complete/);
+      await expect(page.getByText('Thank you for your order!')).toBeVisible();
+});
 
   for (const testCase of requiredFieldCases) {
   test(`${testCase.name} is required during checkout`, async ({ inventoryPage, cartPage, checkoutPage }) => {

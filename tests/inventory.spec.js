@@ -44,4 +44,16 @@ test('user can remove backpack from the cart',
       cartPage.getCartItem(products.backpack.name)
     ).not.toBeVisible();
   });
+
+test(
+  'user can proceed to checkout with a product in the cart',
+  async ({ page, inventoryPage, cartPage }) => {
+    await inventoryPage.addProductToCart(products.backpack.testId);
+    await inventoryPage.openCart();
+
+    await cartPage.proceedToCheckout();
+
+    await expect(page).toHaveURL(/checkout-step-one/);
+  }
+);  
 });

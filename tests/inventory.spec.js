@@ -3,10 +3,6 @@ const { products } = require('../test-data/products');
 
 test.describe('SauceDemo inventory', () => {
 
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/inventory.html');
-  });
-
 test('@smoke logged in user can see the inventory page', async ({ page, inventoryPage }) => {
   await expect(page).toHaveURL(/inventory/);
   await expect(inventoryPage.title).toBeVisible();

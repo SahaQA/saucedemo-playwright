@@ -15,6 +15,11 @@ class CheckoutPage {
     await this.postalCodeInput.fill(postalCode);
     await this.continueButton.click();
   }
+
+  getOverviewItem(productName) {
+    return this.page.getByText(productName);
+  }
+  
 }
 
 module.exports = { CheckoutPage };

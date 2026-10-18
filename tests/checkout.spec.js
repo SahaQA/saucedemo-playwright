@@ -36,7 +36,16 @@ test.describe('SauceDemo checkout', () => {
       await expect(checkoutPage.subtotalLabel).toContainText('Item total:');
       await expect(checkoutPage.taxLabel).toContainText('Tax:');
       await expect(checkoutPage.totalLabel).toContainText('Total:');
-    }
+
+      const subtotalText = await checkoutPage.subtotalLabel.textContent();
+      const taxText = await checkoutPage.taxLabel.textContent();
+      const totalText = await checkoutPage.totalLabel.textContent();
+
+      const subtotal = Number(subtotalText.replace('Item total: $', ''));
+      const tax = Number(taxText.replace('Tax: $', ''));
+      const total = Number(totalText.replace('Total: $', ''));
+
+      expect(subtotal + tax).toBeCloseTo(total, 2);}
   );
 
   for (const testCase of requiredFieldCases) {

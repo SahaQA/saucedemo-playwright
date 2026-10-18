@@ -5,7 +5,11 @@
   "scripts": {
     "test": "playwright test",
     "test:login": "playwright test tests/login.spec.js",
-    "test:inventory": "playwright test tests/inventory.spec.js"
+    "test:inventory": "playwright test tests/inventory.spec.js",
+    "test:checkout": "playwright test tests/checkout.spec.js",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "test:chromium": "playwright test --project=chromium"
 },
   "keywords": [],
   "author": "",

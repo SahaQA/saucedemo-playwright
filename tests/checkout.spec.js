@@ -1,5 +1,6 @@
 const { test, expect } = require('../fixtures/test-fixtures');
 const { products } = require('../test-data/products');
+const { checkoutData } = require('../test-data/checkout');
 
 const requiredFieldCases = [
   {
@@ -30,7 +31,7 @@ test.describe('SauceDemo checkout', () => {
       await inventoryPage.addProductToCart(products.backpack.testId);
       await inventoryPage.openCart();
       await cartPage.proceedToCheckout();
-      await checkoutInformationPage.fillCustomerInformation('John', 'Doe', '12345');
+      await checkoutInformationPage.fillCustomerInformation(checkoutData.validCustomer.firstName, checkoutData.validCustomer.lastName, checkoutData.validCustomer.postalCode);      
       await expect(page).toHaveURL(/checkout-step-two/);
 
       await expect(checkoutOverviewPage.subtotalLabel).toContainText('Item total:');

@@ -34,7 +34,7 @@ jobs:
       - name: Run Playwright tests
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            npx playwright test --project=chromium
+            npx playwright test --project=chromium --grep @smoke
           else
             npm test
           fi

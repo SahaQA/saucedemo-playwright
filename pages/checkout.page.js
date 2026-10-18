@@ -8,6 +8,13 @@ class CheckoutPage {
     this.continueButton = page.locator('[data-test="continue"]');
     this.errorMessage = page.locator('[data-test="error"]');
   }
+
+  async fillCustomerInformation(firstName, lastName, postalCode) {
+    await this.firstNameInput.fill(firstName);
+    await this.lastNameInput.fill(lastName);
+    await this.postalCodeInput.fill(postalCode);
+    await this.continueButton.click();
+  }
 }
 
 module.exports = { CheckoutPage };

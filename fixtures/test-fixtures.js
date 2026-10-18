@@ -4,7 +4,11 @@ const { CartPage } = require('../pages/cart.page');
 
 const test = base.extend({
   inventoryPage: async ({ page }, use) => {
-    await use(new InventoryPage(page));
+    const inventoryPage = new InventoryPage(page);
+
+    await page.goto('/inventory.html');
+
+    await use(inventoryPage);
   },
 
   cartPage: async ({ page }, use) => {
@@ -12,4 +16,4 @@ const test = base.extend({
   }
 });
 
-module.exports = {test, expect};
+module.exports = { test, expect };

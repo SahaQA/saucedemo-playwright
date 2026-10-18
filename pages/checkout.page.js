@@ -7,6 +7,9 @@ class CheckoutPage {
     this.postalCodeInput = page.locator('[data-test="postalCode"]');
     this.continueButton = page.locator('[data-test="continue"]');
     this.errorMessage = page.locator('[data-test="error"]');
+    this.subtotalLabel = page.locator('[data-test="subtotal-label"]');
+    this.taxLabel = page.locator('[data-test="tax-label"]');
+    this.totalLabel = page.locator('[data-test="total-label"]');
   }
 
   async fillCustomerInformation(firstName, lastName, postalCode) {

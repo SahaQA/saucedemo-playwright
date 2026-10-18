@@ -32,6 +32,10 @@ test.describe('SauceDemo checkout', () => {
       await cartPage.proceedToCheckout();
       await checkoutPage.fillCustomerInformation('John', 'Doe', '12345');
       await expect(page).toHaveURL(/checkout-step-two/);
+
+      await expect(checkoutPage.subtotalLabel).toContainText('Item total:');
+      await expect(checkoutPage.taxLabel).toContainText('Tax:');
+      await expect(checkoutPage.totalLabel).toContainText('Total:');
     }
   );
 

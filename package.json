@@ -9,13 +9,16 @@
     "test:checkout": "playwright test tests/checkout.spec.js",
     "test:smoke": "playwright test --grep @smoke",
     "test:regression": "playwright test --grep @regression",
-    "test:chromium": "playwright test --project=chromium"
-},
+    "test:chromium": "playwright test --project=chromium",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@playwright/test": "^1.64.1"
+    "@playwright/test": "^1.64.1",
+    "prettier": "^3.9.10"
   }
 }

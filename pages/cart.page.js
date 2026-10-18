@@ -9,8 +9,8 @@ class CartPage {
   }
 
   async proceedToCheckout() {
-  await this.checkoutButton.click();
-}
+    await this.checkoutButton.click();
+  }
 
   getCartItem(productName) {
     return this.page.getByText(productName);

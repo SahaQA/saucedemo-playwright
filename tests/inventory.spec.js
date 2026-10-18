@@ -1,55 +1,59 @@
-const { test, expect } = require('../fixtures/test-fixtures');
-const { products } = require('../test-data/products');
+const { test, expect } = require("../fixtures/test-fixtures");
+const { products } = require("../test-data/products");
 
-test.describe('SauceDemo inventory', () => {
-
-test('@smoke logged in user can see the inventory page', async ({ page, inventoryPage }) => {
-  await expect(page).toHaveURL(/inventory/);
-  await expect(inventoryPage.title).toBeVisible();
-});
+test.describe("SauceDemo inventory", () => {
+  test("@smoke logged in user can see the inventory page", async ({
+    page,
+    inventoryPage,
+  }) => {
+    await expect(page).toHaveURL(/inventory/);
+    await expect(inventoryPage.title).toBeVisible();
+  });
 
   for (const product of Object.values(products)) {
     test(`user can add ${product.name} to cart`, async ({ inventoryPage }) => {
       await inventoryPage.addProductToCart(product.testId);
 
-      await expect(inventoryPage.cartBadge).toHaveText('1');
+      await expect(inventoryPage.cartBadge).toHaveText("1");
     });
   }
 
-test('added backpack appears in the cart', async ({ inventoryPage, cartPage }) => {
+  test("added backpack appears in the cart", async ({
+    inventoryPage,
+    cartPage,
+  }) => {
     await inventoryPage.addProductToCart(products.backpack.testId);
     await inventoryPage.openCart();
 
-    await expect(
-      cartPage.getCartItem(products.backpack.name)
-    ).toBeVisible();
+    await expect(cartPage.getCartItem(products.backpack.name)).toBeVisible();
   });
 
-test('user can remove backpack from the cart',
-  async ({ inventoryPage, cartPage }) => {    
+  test("user can remove backpack from the cart", async ({
+    inventoryPage,
+    cartPage,
+  }) => {
     await inventoryPage.addProductToCart(products.backpack.testId);
     await inventoryPage.openCart();
 
-    await expect(
-      cartPage.getCartItem(products.backpack.name)
-    ).toBeVisible();
+    await expect(cartPage.getCartItem(products.backpack.name)).toBeVisible();
 
     await cartPage.removeProduct(products.backpack.testId);
 
     await expect(
-      cartPage.getCartItem(products.backpack.name)
+      cartPage.getCartItem(products.backpack.name),
     ).not.toBeVisible();
   });
 
-test(
-  'user can proceed to checkout with a product in the cart',
-  async ({ page, inventoryPage, cartPage }) => {
+  test("user can proceed to checkout with a product in the cart", async ({
+    page,
+    inventoryPage,
+    cartPage,
+  }) => {
     await inventoryPage.addProductToCart(products.backpack.testId);
     await inventoryPage.openCart();
 
     await cartPage.proceedToCheckout();
 
     await expect(page).toHaveURL(/checkout-step-one/);
-  }
-);  
+  });
 });

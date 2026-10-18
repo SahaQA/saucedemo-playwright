@@ -1,6 +1,6 @@
-const { test, expect } = require('../fixtures/test-fixtures');
-const { products } = require('../test-data/products');
-const { checkoutData } = require('../test-data/checkout');
+const { test, expect } = require("../fixtures/test-fixtures");
+const { products } = require("../test-data/products");
+const { checkoutData } = require("../test-data/checkout");
 
 async function startCheckout(inventoryPage, cartPage, product) {
   await inventoryPage.addProductToCart(product.testId);
@@ -10,64 +10,81 @@ async function startCheckout(inventoryPage, cartPage, product) {
 
 const requiredFieldCases = [
   {
-    name: 'first name',
-    firstName: '',
-    lastName: 'Doe',
-    postalCode: '12345',
-    expectedError: 'First Name is required'
+    name: "first name",
+    firstName: "",
+    lastName: "Doe",
+    postalCode: "12345",
+    expectedError: "First Name is required",
   },
   {
-    name: 'last name',
-    firstName: 'John',
-    lastName: '',
-    postalCode: '12345',
-    expectedError: 'Last Name is required'
+    name: "last name",
+    firstName: "John",
+    lastName: "",
+    postalCode: "12345",
+    expectedError: "Last Name is required",
   },
   {
-    name: 'postal code',
-    firstName: 'John',
-    lastName: 'Doe',
-    postalCode: '',
-    expectedError: 'Postal Code is required'
-  }
+    name: "postal code",
+    firstName: "John",
+    lastName: "Doe",
+    postalCode: "",
+    expectedError: "Postal Code is required",
+  },
 ];
 
-test.describe('SauceDemo checkout', () => {
-  test('@smoke user can submit valid checkout information', async ({ page, inventoryPage, cartPage, checkoutInformationPage, checkoutOverviewPage, checkoutCompletePage }) => {
-      await startCheckout(inventoryPage, cartPage, products.backpack);
-      await checkoutInformationPage.fillCustomerInformation(checkoutData.validCustomer.firstName, checkoutData.validCustomer.lastName, checkoutData.validCustomer.postalCode);      
-      await expect(page).toHaveURL(/checkout-step-two/);
+test.describe("SauceDemo checkout", () => {
+  test("@smoke user can submit valid checkout information", async ({
+    page,
+    inventoryPage,
+    cartPage,
+    checkoutInformationPage,
+    checkoutOverviewPage,
+    checkoutCompletePage,
+  }) => {
+    await startCheckout(inventoryPage, cartPage, products.backpack);
+    await checkoutInformationPage.fillCustomerInformation(
+      checkoutData.validCustomer.firstName,
+      checkoutData.validCustomer.lastName,
+      checkoutData.validCustomer.postalCode,
+    );
+    await expect(page).toHaveURL(/checkout-step-two/);
 
-      await expect(checkoutOverviewPage.subtotalLabel).toContainText('Item total:');
-      await expect(checkoutOverviewPage.taxLabel).toContainText('Tax:');
-      await expect(checkoutOverviewPage.totalLabel).toContainText('Total:');
+    await expect(checkoutOverviewPage.subtotalLabel).toContainText(
+      "Item total:",
+    );
+    await expect(checkoutOverviewPage.taxLabel).toContainText("Tax:");
+    await expect(checkoutOverviewPage.totalLabel).toContainText("Total:");
 
-      const subtotalText = await checkoutOverviewPage.subtotalLabel.textContent();
-      const taxText = await checkoutOverviewPage.taxLabel.textContent();
-      const totalText = await checkoutOverviewPage.totalLabel.textContent();
+    const subtotalText = await checkoutOverviewPage.subtotalLabel.textContent();
+    const taxText = await checkoutOverviewPage.taxLabel.textContent();
+    const totalText = await checkoutOverviewPage.totalLabel.textContent();
 
-      const subtotal = Number(subtotalText.replace('Item total: $', ''));
-      const tax = Number(taxText.replace('Tax: $', ''));
-      const total = Number(totalText.replace('Total: $', ''));
+    const subtotal = Number(subtotalText.replace("Item total: $", ""));
+    const tax = Number(taxText.replace("Tax: $", ""));
+    const total = Number(totalText.replace("Total: $", ""));
 
-      expect(subtotal + tax).toBeCloseTo(total, 2);
-      await checkoutOverviewPage.finishOrder();
-      await expect(page).toHaveURL(/checkout-complete/);
-      await expect(checkoutCompletePage.confirmationMessage).toBeVisible();
-});
+    expect(subtotal + tax).toBeCloseTo(total, 2);
+    await checkoutOverviewPage.finishOrder();
+    await expect(page).toHaveURL(/checkout-complete/);
+    await expect(checkoutCompletePage.confirmationMessage).toBeVisible();
+  });
 
   for (const testCase of requiredFieldCases) {
-  test(`@regression ${testCase.name} is required during checkout`, async ({ inventoryPage, cartPage, checkoutInformationPage }) => {
-    await startCheckout(inventoryPage, cartPage, products.backpack);
+    test(`@regression ${testCase.name} is required during checkout`, async ({
+      inventoryPage,
+      cartPage,
+      checkoutInformationPage,
+    }) => {
+      await startCheckout(inventoryPage, cartPage, products.backpack);
 
-    await checkoutInformationPage.firstNameInput.fill(testCase.firstName);
-    await checkoutInformationPage.lastNameInput.fill(testCase.lastName);
-    await checkoutInformationPage.postalCodeInput.fill(testCase.postalCode);
-    await checkoutInformationPage.continueButton.click();
+      await checkoutInformationPage.firstNameInput.fill(testCase.firstName);
+      await checkoutInformationPage.lastNameInput.fill(testCase.lastName);
+      await checkoutInformationPage.postalCodeInput.fill(testCase.postalCode);
+      await checkoutInformationPage.continueButton.click();
 
-    await expect(checkoutInformationPage.errorMessage).toContainText(
-      testCase.expectedError
-    );
-  });
-}
+      await expect(checkoutInformationPage.errorMessage).toContainText(
+        testCase.expectedError,
+      );
+    });
+  }
 });

@@ -25,7 +25,7 @@ test.beforeEach(async ({ page }) => {
     await expect(page).toHaveTitle(/Swag Labs/);
   });
 
-  test('user can login with valid credentials', async ({ page }) => {
+  test('@smoke user can login with valid credentials', async ({ page }) => {
     await loginPage.login(
       users.valid.username,
       users.valid.password
@@ -59,7 +59,7 @@ test.beforeEach(async ({ page }) => {
     );
   });
 
-  test('username is required', async () => {
+  test('@regression username is required', async () => {
     await loginPage.passwordInput.fill('secret_sauce');
     await loginPage.loginButton.click();
 

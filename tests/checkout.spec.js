@@ -27,7 +27,7 @@ const requiredFieldCases = [
 ];
 
 test.describe('SauceDemo checkout', () => {
-  test('user can submit valid checkout information', async ({ page, inventoryPage, cartPage, checkoutInformationPage, checkoutOverviewPage, checkoutCompletePage }) => {
+  test('@smoke user can submit valid checkout information', async ({ page, inventoryPage, cartPage, checkoutInformationPage, checkoutOverviewPage, checkoutCompletePage }) => {
       await inventoryPage.addProductToCart(products.backpack.testId);
       await inventoryPage.openCart();
       await cartPage.proceedToCheckout();
@@ -53,7 +53,7 @@ test.describe('SauceDemo checkout', () => {
 });
 
   for (const testCase of requiredFieldCases) {
-  test(`${testCase.name} is required during checkout`, async ({ inventoryPage, cartPage, checkoutInformationPage }) => {
+  test(`@regression ${testCase.name} is required during checkout`, async ({ inventoryPage, cartPage, checkoutInformationPage }) => {
     await inventoryPage.addProductToCart(products.backpack.testId);
     await inventoryPage.openCart();
     await cartPage.proceedToCheckout();

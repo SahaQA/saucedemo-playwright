@@ -7,7 +7,7 @@ test.describe('SauceDemo inventory', () => {
     await page.goto('/inventory.html');
   });
 
-test('logged in user can see the inventory page', async ({ page, inventoryPage }) => {
+test('@smoke logged in user can see the inventory page', async ({ page, inventoryPage }) => {
   await expect(page).toHaveURL(/inventory/);
   await expect(inventoryPage.title).toBeVisible();
 });

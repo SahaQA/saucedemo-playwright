@@ -2,6 +2,12 @@ const { test, expect } = require('../fixtures/test-fixtures');
 const { products } = require('../test-data/products');
 const { checkoutData } = require('../test-data/checkout');
 
+async function startCheckout(inventoryPage, cartPage, product) {
+  await inventoryPage.addProductToCart(product.testId);
+  await inventoryPage.openCart();
+  await cartPage.proceedToCheckout();
+}
+
 const requiredFieldCases = [
   {
     name: 'first name',
@@ -28,9 +34,7 @@ const requiredFieldCases = [
 
 test.describe('SauceDemo checkout', () => {
   test('@smoke user can submit valid checkout information', async ({ page, inventoryPage, cartPage, checkoutInformationPage, checkoutOverviewPage, checkoutCompletePage }) => {
-      await inventoryPage.addProductToCart(products.backpack.testId);
-      await inventoryPage.openCart();
-      await cartPage.proceedToCheckout();
+      await startCheckout(inventoryPage, cartPage, products.backpack);
       await checkoutInformationPage.fillCustomerInformation(checkoutData.validCustomer.firstName, checkoutData.validCustomer.lastName, checkoutData.validCustomer.postalCode);      
       await expect(page).toHaveURL(/checkout-step-two/);
 
@@ -54,9 +58,7 @@ test.describe('SauceDemo checkout', () => {
 
   for (const testCase of requiredFieldCases) {
   test(`@regression ${testCase.name} is required during checkout`, async ({ inventoryPage, cartPage, checkoutInformationPage }) => {
-    await inventoryPage.addProductToCart(products.backpack.testId);
-    await inventoryPage.openCart();
-    await cartPage.proceedToCheckout();
+    await startCheckout(inventoryPage, cartPage, products.backpack);
 
     await checkoutInformationPage.firstNameInput.fill(testCase.firstName);
     await checkoutInformationPage.lastNameInput.fill(testCase.lastName);

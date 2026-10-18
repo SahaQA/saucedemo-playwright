@@ -1,6 +1,7 @@
 const { test: base, expect } = require('@playwright/test');
 const { InventoryPage } = require('../pages/inventory.page');
 const { CartPage } = require('../pages/cart.page');
+const { CheckoutPage } = require('../pages/checkout.page');
 
 const test = base.extend({
   inventoryPage: async ({ page }, use) => {
@@ -13,6 +14,10 @@ const test = base.extend({
 
   cartPage: async ({ page }, use) => {
     await use(new CartPage(page));
+  },
+
+  checkoutPage: async ({ page }, use) => {
+    await use(new CheckoutPage(page));
   }
 });
 
